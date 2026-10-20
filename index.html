@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI PAI Kelas 7 - Al-Qur'an dan Hadis</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Canvas Confetti for rewards -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fdf4;
+        }
+        .arabic-text {
+            font-family: 'Traditional Arabic', 'Amiri', serif;
+            font-size: 1.5rem;
+            line-height: 2.2;
+            direction: rtl;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(22, 101, 52, 0.1);
+        }
+        .nav-btn.active {
+            background-color: #15803d;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .transition-all-custom {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-emerald-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-emerald-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-600 p-2 rounded-lg text-white">
+                    <i class="fa-solid fa-book-quran text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl leading-tight">MPI PAI & Budi Pekerti</h1>
+                    <p class="text-xs text-emerald-200">Kelas 7 SMP • Al-Qur'an dan Hadis Pedoman Hidupku</p>
+                </div>
+            </div>
+            <div class="text-right hidden sm:block">
+                <span class="bg-emerald-700 text-emerald-100 text-xs px-3 py-1 rounded-full font-medium">Semester 1</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container Layout -->
+    <div class="max-w-7xl mx-auto px-4 py-6 flex-grow flex flex-col md:flex-row gap-6 w-full">
+
+        <!-- Sidebar Navigation (Poin-poin Menu Utama) -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="glass-card rounded-2xl p-4 shadow-sm sticky top-24">
+                <h2 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-3 px-2">Menu Pembelajaran</h2>
+                <nav class="space-y-1.5" id="nav-menu">
+                    <button onclick="switchTab('apersepsi')" id="btn-apersepsi" class="nav-btn active w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-left font-medium text-sm text-slate-700 hover:bg-emerald-100 transition-all-custom">
+                        <i class="fa-solid fa-lightbulb w-6 text-amber-500 text-center"></i>
+                        <span>1. Apersepsi</span>
+                    </button>
+                    <button onclick="switchTab('asesmen-awal')" id="btn-asesmen-awal" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-left font-medium text-sm text-slate-700 hover:bg-emerald-100 transition-all-custom">
+                        <i class="fa-solid fa-clipboard-question w-6 text-blue-500 text-center"></i>
+                        <span>2. Asesmen Awal</span>
+                    </button>
+                    <button onclick="switchTab('materi')" id="btn-materi" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-left font-medium text-sm text-slate-700 hover:bg-emerald-100 transition-all-custom">
+                        <i class="fa-solid fa-book-open w-6 text-emerald-600 text-center"></i>
+                        <span>3. Materi Pokok</span>
+                    </button>
+                    <button onclick="switchTab('simulasi')" id="btn-simulasi" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-left font-medium text-sm text-slate-700 hover:bg-emerald-100 transition-all-custom">
+                        <i class="fa-solid fa-gamepad w-6 text-purple-500 text-center"></i>
+                        <span>4. Simulasi Interaktif</span>
+                    </button>
+                    <button onclick="switchTab('kuis')" id="btn-kuis" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-left font-medium text-sm text-slate-700 hover:bg-emerald-100 transition-all-custom">
+                        <i class="fa-solid fa-puzzle-piece w-6 text-orange-500 text-center"></i>
+                        <span>5. Kuis Penguatan</span>
+                    </button>
+                    <button onclick="switchTab('asesmen-akhir')" id="btn-asesmen-akhir" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-left font-medium text-sm text-slate-700 hover:bg-emerald-100 transition-all-custom">
+                        <i class="fa-solid fa-graduation-cap w-6 text-red-500 text-center"></i>
+                        <span>6. Asesmen Akhir</span>
+                    </button>
+                    <button onclick="switchTab('refleksi')" id="btn-refleksi" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-left font-medium text-sm text-slate-700 hover:bg-emerald-100 transition-all-custom">
+                        <i class="fa-solid fa-heart-pulse w-6 text-pink-500 text-center"></i>
+                        <span>7. Refleksi Diri</span>
+                    </button>
+                </nav>
+
+                <!-- Profile Badge -->
+                <div class="mt-6 pt-4 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p class="font-semibold text-slate-700">Modul PAI SMP Kelas 7</p>
+                    <p>Kurikulum Merdeka</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow">
+            
+            <!-- SECTION 1: APERSEPSI -->
+            <section id="sec-apersepsi" class="content-section glass-card rounded-2xl p-6 md:p-8 shadow-sm">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-amber-100 text-amber-700 rounded-xl">
+                        <i class="fa-solid fa-lightbulb text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">1. Apersepsi: Misteri Kompas Kehidupan</h2>
+                        <p class="text-slate-600 text-sm">Amati fenomena berikut dan temukan pertanyaan rahasiamu!</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="space-y-4">
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl">
+                            <h3 class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-compass mr-2"></i>Bayangkan Situasi Ini!</h3>
+                            <p class="text-sm text-slate-700">
+                                Kamu sedang tersesat di dalam hutan belantara yang gelap tanpa peta, HP mati, dan tidak ada petunjuk jalan. Tiba-tiba seseorang memberimu sebuah **buku panduan resmi** dan **seorang pemandu ahli**. Apa yang akan kamu lakukan?
+                            </p>
+                        </div>
+
+                        <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-xl">
+                            <h3 class="font-bold text-emerald-900 mb-1"><i class="fa-solid fa-earth-americas mr-2"></i>Dunia Nyata</h3>
+                            <p class="text-sm text-slate-700">
+                                Di dunia ini ada miliaran manusia dengan berbagai aturan. Namun umat Islam memiliki **Al-Qur'an** (Buku Panduan) dan **Hadis** (Petunjuk Pemandu/Nabi).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Trigger Interactive Curiosity Questions -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                        <h3 class="font-semibold text-slate-800 text-sm"><i class="fa-solid fa-circle-question text-emerald-600 mr-2"></i>Klik pemantik di bawah untuk memunculkan pertanyaan kritis dalam pikiranmu:</h3>
+                        
+                        <button onclick="toggleCuriosity('c1')" class="w-full text-left p-3 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-sm transition">
+                            🔍 Kenapa Al-Qur'an saja tidak cukup, sehingga kita juga butuh Hadis?
+                        </button>
+                        <div id="c1" class="hidden p-3 bg-emerald-100 text-emerald-900 rounded-lg text-xs font-medium italic">
+                            👉 Pertanyaan bagus! Apakah Hadis hanya melengkapi, atau menjelaskan detail yang belum rinci di Al-Qur'an? Yuk pelajari bersama!
+                        </div>
+
+                        <button onclick="toggleCuriosity('c2')" class="w-full text-left p-3 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-sm transition">
+                            📱 Mengapa anak jaman sekarang lebih sering baca Chat/Medsos daripada Al-Qur'an?
+                        </button>
+                        <div id="c2" class="hidden p-3 bg-emerald-100 text-emerald-900 rounded-lg text-xs font-medium italic">
+                            👉 Apa dampaknya bagi kedamaian hati seseorang saat menjadikan Al-Qur'an & Hadis sebagai panduan hidup sehari-hari?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button onclick="switchTab('asesmen-awal')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-xl flex items-center space-x-2 transition">
+                        <span>Lanjut ke Asesmen Awal</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 2: ASESMEN AWAL -->
+            <section id="sec-asesmen-awal" class="content-section glass-card rounded-2xl p-6 md:p-8 shadow-sm hidden">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-blue-100 text-blue-700 rounded-xl">
+                        <i class="fa-solid fa-clipboard-question text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">2. Asesmen Awal Pemahaman</h2>
+                        <p class="text-slate-600 text-sm">Mari cek sejauh mana pengetahuan awalmu mengenai Al-Qur'an dan Hadis!</p>
+                    </div>
+                </div>
+
+                <form id="form-asesmen-awal" class="space-y-6">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">1. Menurut pengetahuanmu, apa perbedaan mendasar antara Al-Qur'an dan Hadis?</p>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="q_awal_1" value="A" class="text-emerald-600 focus:ring-emerald-500">
+                                <span>Al-Qur'an adalah firman Allah Swt., sedangkan Hadis adalah sabda, perbuatan, dan ketetapan Nabi Muhammad Saw.</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="q_awal_1" value="B" class="text-emerald-600 focus:ring-emerald-500">
+                                <span>Al-Qur'an ditulis oleh sahabat, sedangkan Hadis ditulis oleh Nabi Muhammad Saw.</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="q_awal_1" value="C" class="text-emerald-600 focus:ring-emerald-500">
+                                <span>Al-Qur'an dan Hadis memiliki makna dan kedudukan yang sama persis tanpa perbedaan.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">2. Apakah kamu tahu fungsi utama Hadis terhadap Al-Qur'an?</p>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="q_awal_2" value="A" class="text-emerald-600 focus:ring-emerald-500">
+                                <span>Menjelaskan dan mempertegas hukum-hukum yang ada di dalam Al-Qur'an.</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="q_awal_2" value="B" class="text-emerald-600 focus:ring-emerald-500">
+                                <span>Menggantikan isi Al-Qur'an yang sudah tidak sesuai perkembangan zaman.</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="q_awal_2" value="C" class="text-emerald-600 focus:ring-emerald-500">
+                                <span>Belum tahu sama sekali.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="submitAsesmenAwal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-xl transition">
+                        Kirim Jawaban Awal
+                    </button>
+                </form>
+
+                <div id="res-asesmen-awal" class="hidden mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                    <h3 class="font-bold text-blue-900 mb-1 text-sm"><i class="fa-solid fa-circle-check mr-2"></i>Terima kasih! Pemahaman awalmu telah tercatat.</h3>
+                    <p class="text-xs text-blue-700">Jangan khawatir jika ada yang belum tepat, kita akan mempelajari konsep selengkapnya di materi pokok!</p>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button onclick="switchTab('apersepsi')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-6 py-2.5 rounded-xl transition">Kembali</button>
+                    <button onclick="switchTab('materi')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-xl flex items-center space-x-2 transition">
+                        <span>Lanjut ke Materi Pokok</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 3: MATERI POKOK -->
+            <section id="sec-materi" class="content-section glass-card rounded-2xl p-6 md:p-8 shadow-sm hidden">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-emerald-100 text-emerald-700 rounded-xl">
+                        <i class="fa-solid fa-book-open text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">3. Materi Pokok</h2>
+                        <p class="text-slate-600 text-sm">Kedudukan Al-Qur'an dan Hadis sebagai Pedoman Hidup Manusia</p>
+                    </div>
+                </div>
+
+                <!-- Sub Tab Navigation for Content -->
+                <div class="flex border-b border-slate-200 mb-6 space-x-4 overflow-x-auto text-sm font-medium">
+                    <button onclick="switchSubTab('materi-quran')" id="sub-materi-quran" class="py-2 border-b-2 border-emerald-600 text-emerald-700 font-bold whitespace-nowrap">A. Pengertian & Kedudukan Al-Qur'an</button>
+                    <button onclick="switchSubTab('materi-hadis')" id="sub-materi-hadis" class="py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">B. Pengertian & Kedudukan Hadis</button>
+                    <button onclick="switchSubTab('materi-fungsi')" id="sub-materi-fungsi" class="py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">C. Hubungan & Fungsi Hadis</button>
+                </div>
+
+                <!-- Sub Section A: Al-Qur'an -->
+                <div id="content-materi-quran" class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 space-y-4">
+                        <h3 class="text-lg font-bold text-emerald-800 flex items-center">
+                            <i class="fa-solid fa-book mr-2"></i> Pengertian Al-Qur'an
+                        </h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Secara bahasa, **Al-Qur'an** berasal dari kata <i>qara'a</i> yang artinya "bacaan" atau "yang dibaca". 
+                            Secara istilah, Al-Qur'an adalah **kalam Allah Swt.** yang diturunkan kepada Nabi Muhammad Saw. melalui malaikat Jibril a.s. secara berangsur-angsur, bernilai ibadah bagi yang membacanya, diawali dengan surah Al-Fatihah dan diakhiri surah An-Nas.
+                        </p>
+
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 text-center">
+                            <p class="arabic-text mb-2">إِنَّٓا أَنزَلْنَٰهُ قُرْءَٰنًا عَرَبِيًّا لَّعَلَّكُمْ تَعْقِلُونَ</p>
+                            <p class="text-xs text-slate-600 italic">"Sungguh, Kami menurunkannya berupa Al-Qur'an berbahasa Arab, agar kamu mengerti." (QS. Yusuf [12]: 2)</p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Grafik Kedudukan -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4 text-center">Visualisasi: Kedudukan Sumber Hukum Islam</h3>
+                        <div class="w-full max-w-md mx-auto h-64">
+                            <canvas id="chartKedudukan"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub Section B: Hadis -->
+                <div id="content-materi-hadis" class="space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 space-y-4">
+                        <h3 class="text-lg font-bold text-emerald-800 flex items-center">
+                            <i class="fa-solid fa-scroll mr-2"></i> Pengertian Hadis / Sunnah
+                        </h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Secara bahasa, **Hadis** berarti "baru", "berita", atau "perkataan". 
+                            Secara istilah, Hadis adalah segala **perkataan (qaul), perbuatan (fi'il), ketetapan (taqrir)**, dan sifat Nabi Muhammad Saw. yang dijadikan pedoman hidup umat Islam.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mt-4">
+                            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                                <div class="text-emerald-700 text-xl font-bold mb-1"><i class="fa-solid fa-comment-dots"></i></div>
+                                <h4 class="font-bold text-sm text-slate-800">Qauli (Perkataan)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Semua ucapan lisan yang bersumber dari Nabi Saw.</p>
+                            </div>
+                            <div class="p-4 bg-blue-50 rounded-xl border border-blue-100">
+                                <div class="text-blue-700 text-xl font-bold mb-1"><i class="fa-solid fa-person-walking"></i></div>
+                                <h4 class="font-bold text-sm text-slate-800">Fi'li (Perbuatan)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Perilaku dan tindakan nyata Nabi Saw.</p>
+                            </div>
+                            <div class="p-4 bg-purple-50 rounded-xl border border-purple-100">
+                                <div class="text-purple-700 text-xl font-bold mb-1"><i class="fa-solid fa-thumbs-up"></i></div>
+                                <h4 class="font-bold text-sm text-slate-800">Taqriri (Ketetapan)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Sikap diam/persetujuan Nabi terhadap perbuatan sahabat.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub Section C: Hubungan & Fungsi -->
+                <div id="content-materi-fungsi" class="space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 space-y-4">
+                        <h3 class="text-lg font-bold text-emerald-800 mb-2">3 Fungsi Utama Hadis Terhadap Al-Qur'an</h3>
+                        
+                        <div class="space-y-3 text-sm">
+                            <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-emerald-600">
+                                <h4 class="font-bold text-slate-800">1. Bayan At-Taqrir (Penguat Hukum)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Mempertegas hukum yang sudah ada dalam Al-Qur'an. Contoh: Hadis tentang kewajiban puasa Ramadan memperkuat QS. Al-Baqarah: 183.</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-blue-600">
+                                <h4 class="font-bold text-slate-800">2. Bayan At-Tafsir (Penjelas/Rincian)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Menerangkan ayat Al-Qur'an yang masih umum. Contoh: Al-Qur'an memerintahkan salat, Hadis menjelaskan tata cara gerakan dan bacaan salat secara detail.</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-purple-600">
+                                <h4 class="font-bold text-slate-800">3. Bayan At-Tasyri' (Penetapan Hukum Baru)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Menetapkan hukum yang tidak disebutkan secara eksplisit dalam Al-Qur'an. Contoh: Larangan memakan binatang buas bertaring.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button onclick="switchTab('asesmen-awal')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-6 py-2.5 rounded-xl transition">Kembali</button>
+                    <button onclick="switchTab('simulasi')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-xl flex items-center space-x-2 transition">
+                        <span>Lanjut ke Simulasi Interaktif</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 4: SIMULASI INTERAKTIF -->
+            <section id="sec-simulasi" class="content-section glass-card rounded-2xl p-6 md:p-8 shadow-sm hidden">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-purple-100 text-purple-700 rounded-xl">
+                        <i class="fa-solid fa-gamepad text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">4. Simulasi Interaktif: Cek Fungsi Hadis</h2>
+                        <p class="text-slate-600 text-sm">Pilih Ayat Al-Qur'an di bawah dan lihat bagaimana Hadis memberikan penjelasannya!</p>
+                    </div>
+                </div>
+
+                <!-- Simulation Interactive Box -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Pilih Perintah dalam Al-Qur'an:</label>
+                    <select id="sim-select" onchange="runSimulation()" class="w-full p-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-500 text-sm mb-6">
+                        <option value="">-- Pilih Ayat / Perintah --</option>
+                        <option value="salat">Surah Al-Baqarah Ayat 43: "Dan laksanakanlah salat..."</option>
+                        <option value="zakat">Surah Al-Baqarah Ayat 43: "...dan tunaikanlah zakat"</option>
+                        <option value="makanan">Surah Al-Ma'idah Ayat 3: Makanan yang diharamkan</option>
+                    </select>
+
+                    <div id="sim-result" class="hidden space-y-4">
+                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-200 px-2 py-0.5 rounded">Teks Al-Qur'an (Umum)</span>
+                            <p id="sim-quran-text" class="text-sm font-medium text-slate-800 mt-2"></p>
+                        </div>
+
+                        <div class="text-center text-purple-600 text-2xl">
+                            <i class="fa-solid fa-circle-down animate-bounce"></i>
+                        </div>
+
+                        <div class="p-4 bg-purple-50 border border-purple-200 rounded-xl">
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-800 bg-purple-200 px-2 py-0.5 rounded">Penjelasan Hadis Nabi Saw. (Rinci)</span>
+                            <p id="sim-hadis-text" class="text-sm font-medium text-slate-800 mt-2"></p>
+                        </div>
+
+                        <div class="p-3 bg-emerald-100 text-emerald-800 rounded-lg text-xs font-semibold flex items-center space-x-2">
+                            <i class="fa-solid fa-lightbulb text-base"></i>
+                            <span id="sim-fungsi-text"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button onclick="switchTab('materi')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-6 py-2.5 rounded-xl transition">Kembali</button>
+                    <button onclick="switchTab('kuis')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-xl flex items-center space-x-2 transition">
+                        <span>Lanjut ke Kuis Penguatan</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 5: KUIS PENGUATAN -->
+            <section id="sec-kuis" class="content-section glass-card rounded-2xl p-6 md:p-8 shadow-sm hidden">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-orange-100 text-orange-700 rounded-xl">
+                        <i class="fa-solid fa-puzzle-piece text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">5. Kuis Penguatan Pemahaman</h2>
+                        <p class="text-slate-600 text-sm">Jawab pertanyaan latihan berikut untuk menguji dan menguatkan ingatanmu!</p>
+                    </div>
+                </div>
+
+                <div id="quiz-card" class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xs font-bold text-orange-600 uppercase tracking-wider" id="quiz-progress">Soal 1 dari 3</span>
+                        <span class="text-xs text-slate-500" id="quiz-score">Skor: 0</span>
+                    </div>
+
+                    <h3 class="text-base font-semibold text-slate-800 mb-4" id="quiz-question">Loading...</h3>
+
+                    <div class="space-y-2" id="quiz-options">
+                        <!-- Dynamic options -->
+                    </div>
+
+                    <div id="quiz-feedback" class="hidden mt-4 p-3 rounded-lg text-xs font-medium"></div>
+
+                    <div class="mt-6 flex justify-end">
+                        <button id="btn-next-quiz" onclick="nextQuiz()" class="hidden bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium px-5 py-2 rounded-lg transition">
+                            Soal Berikutnya
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button onclick="switchTab('simulasi')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-6 py-2.5 rounded-xl transition">Kembali</button>
+                    <button onclick="switchTab('asesmen-akhir')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-xl flex items-center space-x-2 transition">
+                        <span>Lanjut ke Asesmen Akhir</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 6: ASESMEN AKHIR -->
+            <section id="sec-asesmen-akhir" class="content-section glass-card rounded-2xl p-6 md:p-8 shadow-sm hidden">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-red-100 text-red-700 rounded-xl">
+                        <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">6. Asesmen Akhir</h2>
+                        <p class="text-slate-600 text-sm">Evaluasi hasil belajar untuk mengukur ketercapaian kompetensimu!</p>
+                    </div>
+                </div>
+
+                <form id="form-asesmen-akhir" class="space-y-6">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">1. Al-Qur'an merupakan mukjizat terbesar Nabi Muhammad Saw. Salah satu bukti keautentikannya adalah...</p>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="qa_1" value="A" class="text-emerald-600">
+                                <span>Dijamin keasliannya oleh Allah Swt. hingga akhir zaman</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="qa_1" value="B" class="text-emerald-600">
+                                <span>Hanya boleh dibaca oleh kalangan tertentu saja</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="qa_1" value="C" class="text-emerald-600">
+                                <span>Selalu mengalami perubahan revisi tiap abad</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">2. Perhatikan ayat: "Salatlah kalian sebagaimana kalian melihat aku salat". Hadis ini menunjukkan fungsi Hadis sebagai...</p>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="qa_2" value="A" class="text-emerald-600">
+                                <span>Pengubah hukum Al-Qur'an</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="qa_2" value="B" class="text-emerald-600">
+                                <span>Penjelas (Tafsir) tata cara pelaksanaan ibadah dalam Al-Qur'an</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                <input type="radio" name="qa_2" value="C" class="text-emerald-600">
+                                <span>Pembatal perintah salat</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="submitAsesmenAkhir()" class="bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-2.5 rounded-xl transition">
+                        Kirim Jawaban Asesmen
+                    </button>
+                </form>
+
+                <div id="res-asesmen-akhir" class="hidden mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-xl text-center space-y-3">
+                    <i class="fa-solid fa-trophy text-4xl text-amber-500"></i>
+                    <h3 class="font-bold text-slate-800 text-lg">Hasil Asesmen Akhir Kamu</h3>
+                    <p class="text-3xl font-extrabold text-emerald-700" id="final-score">100 / 100</p>
+                    <p class="text-xs text-slate-600" id="final-note">Luar biasa! Kamu telah memahami kedudukan Al-Qur'an dan Hadis dengan sangat baik.</p>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button onclick="switchTab('kuis')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-6 py-2.5 rounded-xl transition">Kembali</button>
+                    <button onclick="switchTab('refleksi')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2.5 rounded-xl flex items-center space-x-2 transition">
+                        <span>Lanjut ke Refleksi Diri</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 7: REFLEKSI DIRI -->
+            <section id="sec-refleksi" class="content-section glass-card rounded-2xl p-6 md:p-8 shadow-sm hidden">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-pink-100 text-pink-700 rounded-xl">
+                        <i class="fa-solid fa-heart-pulse text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">7. Refleksi Diri & Rencana Perbaikan</h2>
+                        <p class="text-slate-600 text-sm">Ekspresikan kesanmu dan buat komitmen kebaikan untuk masa depan!</p>
+                    </div>
+                </div>
+
+                <form id="form-refleksi" class="space-y-6">
+                    <!-- Self Assessment -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
+                        <label class="block text-sm font-semibold text-slate-800">1. Tingkat Pemahaman Mandiri Terhadap Materi:</label>
+                        <select class="w-full p-2.5 rounded-lg border border-slate-300 text-sm">
+                            <option>Sangat Paham - Saya siap menerapkan petunjuk Al-Qur'an & Hadis</option>
+                            <option>Paham - Saya paham garis besarnya</option>
+                            <option>Cukup - Perlu membaca dan mengulang lagi</option>
+                        </select>
+                    </div>
+
+                    <!-- Feelings & Expressing -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
+                        <label class="block text-sm font-semibold text-slate-800">2. Bagaimana perasaanmu setelah mempelajari materi ini?</label>
+                        <div class="flex space-x-4">
+                            <label class="flex flex-col items-center p-3 rounded-xl border border-slate-200 hover:bg-pink-50 cursor-pointer w-1/3 text-center">
+                                <input type="radio" name="feeling" value="senang" class="mb-2">
+                                <span class="text-2xl">😊</span>
+                                <span class="text-xs font-medium mt-1">Senang & Termotivasi</span>
+                            </label>
+                            <label class="flex flex-col items-center p-3 rounded-xl border border-slate-200 hover:bg-pink-50 cursor-pointer w-1/3 text-center">
+                                <input type="radio" name="feeling" value="paham" class="mb-2">
+                                <span class="text-2xl">🤓</span>
+                                <span class="text-xs font-medium mt-1">Makin Tahu</span>
+                            </label>
+                            <label class="flex flex-col items-center p-3 rounded-xl border border-slate-200 hover:bg-pink-50 cursor-pointer w-1/3 text-center">
+                                <input type="radio" name="feeling" value="tergugah" class="mb-2">
+                                <span class="text-2xl">🤲</span>
+                                <span class="text-xs font-medium mt-1">Tergugah Berubah</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Plan for Future -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
+                        <label class="block text-sm font-semibold text-slate-800">3. Target / Komitmen Kebaikan Saya Ke Depan:</label>
+                        <textarea rows="3" class="w-full p-3 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-pink-500" placeholder="Contoh: Saya akan menyempatkan membaca Al-Qur'an 5 ayat tiap selesai salat dan mempelajari 1 hadis pendek seminggu sekali..."></textarea>
+                    </div>
+
+                    <button type="button" onclick="submitRefleksi()" class="bg-pink-600 hover:bg-pink-700 text-white font-medium px-6 py-2.5 rounded-xl transition">
+                        Simpan Refleksi Diri
+                    </button>
+                </form>
+
+                <div id="res-refleksi" class="hidden mt-6 p-4 bg-pink-50 border border-pink-200 rounded-xl text-center space-y-2">
+                    <i class="fa-solid fa-circle-check text-2xl text-pink-600"></i>
+                    <h3 class="font-bold text-pink-900 text-sm">Refleksi Berhasil Disimpan!</h3>
+                    <p class="text-xs text-pink-700">Semoga Al-Qur'an dan Hadis selalu menjadi penerang dan pedoman dalam setiap langkah hidupmu. Selamat belajar!</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Tab Switcher
+        function switchTab(tabId) {
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            // Deactivate all nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected section
+            const targetSection = document.getElementById(`sec-${tabId}`);
+            if (targetSection) targetSection.classList.remove('hidden');
+
+            // Activate selected nav button
+            const targetBtn = document.getElementById(`btn-${tabId}`);
+            if (targetBtn) targetBtn.classList.add('active');
+
+            // Initialize chart if materi tab opened
+            if (tabId === 'materi' && !chartInitialized) {
+                initChart();
+            }
+        }
+
+        // Sub Tab Switcher in Materi
+        function switchSubTab(subTabId) {
+            const subTabs = ['quran', 'hadis', 'fungsi'];
+            subTabs.forEach(tab => {
+                document.getElementById(`content-materi-${tab}`).classList.add('hidden');
+                document.getElementById(`sub-materi-${tab}`).classList.remove('border-emerald-600', 'text-emerald-700', 'font-bold');
+                document.getElementById(`sub-materi-${tab}`).classList.add('border-transparent', 'text-slate-500');
+            });
+
+            document.getElementById(`content-${subTabId}`).classList.remove('hidden');
+            document.getElementById(`sub-${subTabId}`).classList.add('border-emerald-600', 'text-emerald-700', 'font-bold');
+            document.getElementById(`sub-${subTabId}`).classList.remove('border-transparent', 'text-slate-500');
+        }
+
+        // Apersepsi Toggle
+        function toggleCuriosity(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
+
+        // Asesmen Awal Submit
+        function submitAsesmenAwal() {
+            document.getElementById('res-asesmen-awal').classList.remove('hidden');
+        }
+
+        // Chart Initialization
+        let chartInitialized = false;
+        function initChart() {
+            chartInitialized = true;
+            const ctx = document.getElementById('chartKedudukan').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Al-Qur'an (Sumber Utama)", "Hadis/Sunnah (Sumber Kedua)", "Ijtihad (Pengembangan)"],
+                    datasets: [{
+                        data: [50, 35, 15],
+                        backgroundColor: ['#059669', '#0284c7', '#9333ea'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Simulation Interactive
+        const simData = {
+            salat: {
+                quran: 'Surah Al-Baqarah [2]: 43 — "Dan laksanakanlah salat, tunaikanlah zakat, dan rukuklah beserta orang-orang yang rukuk."',
+                hadis: 'Hadis Riwayat Bukhari — "Salatlah kalian sebagaimana kalian melihat aku salat."',
+                fungsi: 'Fungsi Hadis: Bayan At-Tafsir (Menerangkan dan menjelaskan teknis tata cara salat yang tidak dijelaskan rinci di Al-Qur\'an).'
+            },
+            zakat: {
+                quran: 'Surah At-Taubah [9]: 103 — "Ambillah zakat dari harta mereka guna menyucikan dan membersihkan mereka..."',
+                hadis: 'Hadis Riwayat Muslim — Menjelaskan nisab (batas minimal harta) zakat emas 20 dinar, perak 200 dirham, serta persentasenya 2.5%.',
+                fungsi: 'Fungsi Hadis: Bayan At-Tafsir (Memberikan batasan dan kadar rincian hukum zakat).'
+            },
+            makanan: {
+                quran: 'Surah Al-Ma\'idah [5]: 3 — "Diharamkan bagimu (memakan) bangkai, darah, daging babi..."',
+                hadis: 'Hadis Riwayat Muslim — "Setiap binatang buas yang bertaring, maka memakannya adalah haram."',
+                fungsi: 'Fungsi Hadis: Bayan At-Tasyri\' (Menetapkan hukum baru yang belum ada nas eksplisitnya di ayat tersebut).'
+            }
+        };
+
+        function runSimulation() {
+            const val = document.getElementById('sim-select').value;
+            const resBox = document.getElementById('sim-result');
+            if (!val) {
+                resBox.classList.add('hidden');
+                return;
+            }
+
+            const data = simData[val];
+            document.getElementById('sim-quran-text').innerText = data.quran;
+            document.getElementById('sim-hadis-text').innerText = data.hadis;
+            document.getElementById('sim-fungsi-text').innerText = data.fungsi;
+            resBox.classList.remove('hidden');
+        }
+
+        // Kuis Penguatan
+        const quizData = [
+            {
+                q: "Apa arti Al-Qur'an secara bahasa?",
+                options: ["Berita", "Bacaan", "Ketetapan", "Perkataan"],
+                ans: 1
+            },
+            {
+                q: "Berikut ini yang merupakan pengertian Hadis Taqriro adalah...",
+                options: [
+                    "Sesuai dengan perkataan lisan Nabi Saw.",
+                    "Sesuai dengan perbuatan nyata Nabi Saw.",
+                    "Persetujuan/sikap diam Nabi Saw. atas perbuatan sahabat",
+                    "Cita-cita para sahabat Nabi Saw."
+                ],
+                ans: 2
+            },
+            {
+                q: "Mengapa posisi Hadis ditempatkan sebagai sumber hukum Islam kedua setelah Al-Qur'an?",
+                options: [
+                    "Karena Hadis dibuat belakangan",
+                    "Karena Hadis berfungsi memperjelas dan menafsirkan ayat Al-Qur'an",
+                    "Karena Hadis ditulis oleh ulama",
+                    "Karena Al-Qur'an sudah tidak berlaku lagi"
+                ],
+                ans: 1
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        function loadQuiz() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-progress').innerText = `Soal ${currentQuizIndex + 1} dari ${quizData.length}`;
+            document.getElementById('quiz-question').innerText = q.q;
+
+            const optContainer = document.getElementById('quiz-options');
+            optContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-lg border border-slate-200 hover:bg-orange-50 text-sm transition";
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.onclick = () => checkQuiz(idx);
+                optContainer.appendChild(btn);
+            });
+
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('btn-next-quiz').classList.add('hidden');
+        }
+
+        function checkQuiz(selectedIdx) {
+            const q = quizData[currentQuizIndex];
+            const feedback = document.getElementById('quiz-feedback');
+            const btns = document.getElementById('quiz-options').children;
+
+            // Disable all option buttons
+            for (let btn of btns) {
+                btn.disabled = true;
+            }
+
+            if (selectedIdx === q.ans) {
+                quizScore += 10;
+                feedback.className = "mt-4 p-3 rounded-lg text-xs font-medium bg-emerald-100 text-emerald-800";
+                feedback.innerText = "✨ Benar sekali! Jawabanmu tepat.";
+            } else {
+                feedback.className = "mt-4 p-3 rounded-lg text-xs font-medium bg-red-100 text-red-800";
+                feedback.innerText = `❌ Kurang tepat. Jawaban yang benar adalah: ${q.options[q.ans]}`;
+            }
+
+            document.getElementById('quiz-score').innerText = `Skor: ${quizScore}`;
+            feedback.classList.remove('hidden');
+            document.getElementById('btn-next-quiz').classList.remove('hidden');
+        }
+
+        function nextQuiz() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                loadQuiz();
+            } else {
+                document.getElementById('quiz-card').innerHTML = `
+                    <div class="text-center py-6">
+                        <i class="fa-solid fa-circle-check text-4xl text-orange-500 mb-2"></i>
+                        <h3 class="font-bold text-slate-800">Kuis Selesai!</h3>
+                        <p class="text-sm text-slate-600 mt-1">Skor Akhir Kuis Penguatan: <strong>${quizScore} / 30</strong></p>
+                    </div>
+                `;
+            }
+        }
+
+        // Asesmen Akhir Submit
+        function submitAsesmenAkhir() {
+            const q1 = document.querySelector('input[name="qa_1"]:checked')?.value;
+            const q2 = document.querySelector('input[name="qa_2"]:checked')?.value;
+
+            let score = 0;
+            if (q1 === 'A') score += 50;
+            if (q2 === 'B') score += 50;
+
+            document.getElementById('final-score').innerText = `${score} / 100`;
+            document.getElementById('res-asesmen-akhir').classList.remove('hidden');
+
+            // Trigger confetti celebrate
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Refleksi Submit
+        function submitRefleksi() {
+            document.getElementById('res-refleksi').classList.remove('hidden');
+        }
+
+        // Window Onload Init
+        window.onload = function() {
+            loadQuiz();
+        };
+    </script>
+</body>
+</html>
